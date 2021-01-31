@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RetailManager.DesktopUI.Helpers;
 using RetailManager.DesktopUI.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace RetailManager.DesktopUI
 {
@@ -16,6 +18,11 @@ namespace RetailManager.DesktopUI
         public Bootstrapper()
         {
                 Initialize();
+
+            ConventionManager.AddElementConvention<PasswordBox>(
+            PasswordBoxHelper.BoundPasswordProperty,
+            "Password",
+            "PasswordChanged");
         }
 
         protected override void Configure()
@@ -24,7 +31,8 @@ namespace RetailManager.DesktopUI
 
             _container
                 .Singleton<IWindowManager, WindowManager>()
-                .Singleton<IEventAggregator, EventAggregator>();
+                .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<IApiHelper, ApiHelper>();
 
             GetType().Assembly.GetTypes()
                 .Where(type => type.IsClass)

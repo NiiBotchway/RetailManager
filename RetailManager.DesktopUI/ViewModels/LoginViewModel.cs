@@ -12,8 +12,8 @@ namespace RetailManager.DesktopUI.ViewModels
     {
         private readonly IApiHelper _apiHelper;
         private string _userName;
-
         private string _password;
+        private string _errorMessage;
 
         public LoginViewModel(IApiHelper apiHelper)
         {
@@ -30,6 +30,24 @@ namespace RetailManager.DesktopUI.ViewModels
                 NotifyOfPropertyChange(() => CanLogin);
             }
         }
+
+        public bool IsErrorVisible 
+        {
+            get {
+                return ErrorMessage?.Length > 0;
+            } 
+        }
+
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set {
+                _errorMessage = value;
+                NotifyOfPropertyChange(() => ErrorMessage);
+                NotifyOfPropertyChange(() => IsErrorVisible);
+            }
+        }
+
 
 
         public string Password
@@ -56,11 +74,12 @@ namespace RetailManager.DesktopUI.ViewModels
         {
             try
             {
+                ErrorMessage = string.Empty;
                 var result = await _apiHelper.Authenticate(UserName, Password);
             }
             catch (Exception ex)
             {
-                throw ex;
+                ErrorMessage = ex.Message;
             }
         }
     }

@@ -9,6 +9,10 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "RetailManagerDB", "RetailMa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailManager.DesktopUI", "RetailManager.DesktopUI\RetailManager.DesktopUI.csproj", "{DBC607AB-66E9-48E9-BF79-5DF24ED355E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailManager.DataAccessLibrary", "RetailManager.DataAccessLibrary\RetailManager.DataAccessLibrary.csproj", "{AFCE20F8-9725-4502-87C4-77A829EBFC32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetailManager.DesktopUI.Library", "RetailManager.DesktopUI.Library\RetailManager.DesktopUI.Library.csproj", "{936ACA2F-6903-4795-AE3A-BC62816244AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +33,14 @@ Global
 		{DBC607AB-66E9-48E9-BF79-5DF24ED355E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBC607AB-66E9-48E9-BF79-5DF24ED355E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DBC607AB-66E9-48E9-BF79-5DF24ED355E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFCE20F8-9725-4502-87C4-77A829EBFC32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFCE20F8-9725-4502-87C4-77A829EBFC32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFCE20F8-9725-4502-87C4-77A829EBFC32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFCE20F8-9725-4502-87C4-77A829EBFC32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{936ACA2F-6903-4795-AE3A-BC62816244AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{936ACA2F-6903-4795-AE3A-BC62816244AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{936ACA2F-6903-4795-AE3A-BC62816244AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{936ACA2F-6903-4795-AE3A-BC62816244AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

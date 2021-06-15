@@ -1,5 +1,5 @@
 ﻿using Caliburn.Micro;
-using RetailManager.DesktopUI.Helpers;
+using RetailManager.DesktopUI.Library.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,17 +31,19 @@ namespace RetailManager.DesktopUI.ViewModels
             }
         }
 
-        public bool IsErrorVisible 
+        public bool IsErrorVisible
         {
-            get {
+            get
+            {
                 return ErrorMessage?.Length > 0;
-            } 
+            }
         }
 
         public string ErrorMessage
         {
             get { return _errorMessage; }
-            set {
+            set
+            {
                 _errorMessage = value;
                 NotifyOfPropertyChange(() => ErrorMessage);
                 NotifyOfPropertyChange(() => IsErrorVisible);
@@ -70,12 +72,17 @@ namespace RetailManager.DesktopUI.ViewModels
 
         }
 
-        public async Task Login(string userName, string password)
+        public async Task Login()
         {
             try
             {
                 ErrorMessage = string.Empty;
                 var result = await _apiHelper.Authenticate(UserName, Password);
+
+                //capture more information about the user
+                //var LoggedInUser = await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
+                var LoggedInUser = await _apiHelper.GetLoggedInUserInfo();
+                ErrorMessage = "Success";
             }
             catch (Exception ex)
             {

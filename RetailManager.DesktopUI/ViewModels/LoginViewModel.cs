@@ -14,6 +14,7 @@ namespace RetailManager.DesktopUI.ViewModels
         private string _userName;
         private string _password;
         private string _errorMessage;
+        private string _successMessage;
 
         public LoginViewModel(IApiHelper apiHelper)
         {
@@ -39,6 +40,14 @@ namespace RetailManager.DesktopUI.ViewModels
             }
         }
 
+        public bool IsSuccessVisible
+        {
+            get
+            {
+                return SuccessMessage?.Length > 0;
+            }
+        }
+
         public string ErrorMessage
         {
             get { return _errorMessage; }
@@ -51,6 +60,16 @@ namespace RetailManager.DesktopUI.ViewModels
         }
 
 
+        public string SuccessMessage
+        {
+            get { return _successMessage; }
+            set
+            {
+                _successMessage = value;
+                NotifyOfPropertyChange(() => SuccessMessage);
+                NotifyOfPropertyChange(() => IsSuccessVisible);
+            }
+        }
 
         public string Password
         {
@@ -67,26 +86,32 @@ namespace RetailManager.DesktopUI.ViewModels
         {
             get
             {
-                return (UserName?.Length > 0 && Password?.Length > 0);
+                return ((UserName?.Length ?? 0) > 0 && (Password?.Length ?? 0) > 0);
             }
 
         }
 
-        public async Task Login()
+        public async Task Login(string username, string password)
         {
             try
             {
                 ErrorMessage = string.Empty;
+                SuccessMessage = string.Empty;
                 var result = await _apiHelper.Authenticate(UserName, Password);
-
-                //capture more information about the user
-                //var LoggedInUser = await _apiHelper.GetLoggedInUserInfo(result.Access_Token);
-                var LoggedInUser = await _apiHelper.GetLoggedInUserInfo();
-                ErrorMessage = "Success";
+                if (result.Access_Token != null)
+                {
+                    var info = _apiHelper.GetLoggedInUserInfo();
+                    SuccessMessage = "Login Successful";
+                }
+                else
+                {
+                    ErrorMessage = "Wrong username or password";
+                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ErrorMessage = ex.Message;
+                ErrorMessage = $"Unknown Error Occured. \nPlease contact admin";
+
             }
         }
     }

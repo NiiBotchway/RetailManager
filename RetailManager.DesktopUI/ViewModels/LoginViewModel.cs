@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using RetailManager.DesktopUI.EventModels;
 using RetailManager.DesktopUI.Library.Api;
 using System;
 using System.Collections.Generic;
@@ -11,14 +12,16 @@ namespace RetailManager.DesktopUI.ViewModels
     public class LoginViewModel : Screen
     {
         private readonly IApiHelper _apiHelper;
+        private readonly IEventAggregator _events;
         private string _userName;
         private string _password;
         private string _errorMessage;
         private string _successMessage;
 
-        public LoginViewModel(IApiHelper apiHelper)
+        public LoginViewModel(IApiHelper apiHelper, IEventAggregator events)
         {
             _apiHelper = apiHelper;
+            _events = events;
         }
 
         public string UserName
@@ -102,6 +105,8 @@ namespace RetailManager.DesktopUI.ViewModels
                 {
                     var info = _apiHelper.GetLoggedInUserInfo();
                     SuccessMessage = "Login Successful";
+
+                    _events.PublishOnUIThread(new LogOnEvent());
                 }
                 else
                 {

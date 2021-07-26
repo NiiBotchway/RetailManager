@@ -11,17 +11,24 @@ namespace RetailManager.DesktopUI.ViewModels
 {
     public class LoginViewModel : Screen
     {
-        private readonly IApiHelper _apiHelper;
+        private readonly IUICoreEndpoint _apiHelper;
         private readonly IEventAggregator _events;
         private string _userName;
         private string _password;
         private string _errorMessage;
         private string _successMessage;
 
-        public LoginViewModel(IApiHelper apiHelper, IEventAggregator events)
+        public LoginViewModel(IUICoreEndpoint apiHelper, IEventAggregator events)
         {
             _apiHelper = apiHelper;
             _events = events;
+        }
+
+        protected override void OnViewLoaded(object view)
+        {
+            base.OnViewLoaded(view);
+
+            UserName = "ishmoto4u@gmail.com";
         }
 
         public string UserName

@@ -10,16 +10,22 @@ using System.Threading.Tasks;
 
 namespace RetailManager.DesktopUI.Library.Api
 {
-    public class ApiHelper : IApiHelper
+    public class UICoreEndpoint : IUICoreEndpoint
     {
         private HttpClient _apiClient;
         private readonly ILoggedInUserModel _loggedInUser;
 
-        public ApiHelper(ILoggedInUserModel loggedInUser)
+        public UICoreEndpoint(ILoggedInUserModel loggedInUser)
         {
             InitializeClient();
             _loggedInUser = loggedInUser;
         }
+
+        public HttpClient ApiClient
+        {
+            get { return _apiClient; }
+        }
+
 
         private void InitializeClient()
         {

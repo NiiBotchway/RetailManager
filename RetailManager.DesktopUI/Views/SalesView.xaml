@@ -31,7 +31,7 @@
         <TextBlock Text="Sales" FontSize="40" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Margin="0 10" HorizontalAlignment="Center"/>
 
         <TextBlock Text="Items" Grid.Row="1" Grid.Column="1" />
-        <ListBox ItemsSource="{Binding Products}" Grid.Row="2" Grid.Column="1" MinHeight="200" MinWidth="150"  Background="Aqua">
+        <ListBox ItemsSource="{Binding Products}" Grid.Row="2" Grid.Column="1" MinHeight="200" MinWidth="150"  Background="Ivory" SelectedItem="{Binding SelectedProduct}">
             <ListBox.ItemTemplate>
             <DataTemplate>
                 <DockPanel>
@@ -52,7 +52,16 @@
 
 
         <TextBlock Text="Cart" Grid.Row="1" Grid.Column="3" />
-        <ListBox x:Name="Cart" Grid.Row="2" Grid.Column="3" MinHeight="200" MinWidth="150" />
+        <ListBox ItemsSource="{Binding Cart}" Grid.Row="2" Grid.Column="3" MinHeight="200" MinWidth="150">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel>
+                        <!--<TextBlock DockPanel.Dock="Left">Product:</TextBlock>-->
+                        <TextBlock DockPanel.Dock="Right" Text="{Binding DisplayText}"/>
+                    </DockPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
         <DockPanel Grid.Row="3" Grid.Column="3" Margin="2 2">
             <TextBlock Text="SubTotal:" TextAlignment="Right" Margin="0 0 15 0"/>

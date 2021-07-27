@@ -12,6 +12,6 @@ namespace RetailManager.DataAccessLibrary.Models
         public string ProductName { get; set; }
         public string Description { get; set; }
         public string RetailPrice { get; set; }
-        public string QuaitityInStock { get; set; }
+        public int QuantityInStock { get; set; }
     }
 }

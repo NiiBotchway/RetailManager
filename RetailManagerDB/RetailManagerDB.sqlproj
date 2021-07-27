@@ -61,6 +61,7 @@
     <Folder Include="dbo\Views" />
     <Folder Include="dbo\Stored Procedures" />
     <Folder Include="PublishLocations" />
+    <Folder Include="Scripts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\RetailManagerDB.publish.xml" />
@@ -73,5 +74,14 @@
     <Build Include="dbo\Tables\User.sql" />
     <Build Include="dbo\Stored Procedures\spUserLookup.sql" />
     <Build Include="dbo\Stored Procedures\spProduct_GetAll.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="RetailManagerDB.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <PreDeploy Include="Scripts\Script.RetailManager.PreDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\Script.RetailManager.PostDeployment.sql" />
   </ItemGroup>
 </Project>

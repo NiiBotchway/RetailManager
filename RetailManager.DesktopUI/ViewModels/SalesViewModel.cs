@@ -13,7 +13,6 @@ namespace RetailManager.DesktopUI.ViewModels
     public class SalesViewModel : Screen
     {
 
-        private BindingList<Product> _cart;
         private readonly IProductEndpoint _productEndpoint;
         public SalesViewModel(IProductEndpoint productEndpoint)
         {
@@ -28,7 +27,7 @@ namespace RetailManager.DesktopUI.ViewModels
             Products = new BindingList<Product>(products);
         }
 
-        private BindingList<Product> _products;
+        private BindingList<Product> _products = new BindingList<Product>();
 
         public BindingList<Product> Products
         {
@@ -40,7 +39,22 @@ namespace RetailManager.DesktopUI.ViewModels
             }
         }
 
-        private int _itemQuantity;
+        private Product _selectedProduct;
+
+        public Product SelectedProduct
+        {
+            get { return _selectedProduct; }
+            set
+            {
+                _selectedProduct = value;
+
+                NotifyOfPropertyChange(() => SelectedProduct);
+                NotifyOfPropertyChange(() => CanAddToCart);
+            }
+        }
+
+
+        private int _itemQuantity = 1;
 
         public int ItemQuantity
         {
@@ -49,25 +63,71 @@ namespace RetailManager.DesktopUI.ViewModels
             {
                 _itemQuantity = value;
                 NotifyOfPropertyChange(() => ItemQuantity);
+                NotifyOfPropertyChange(() => CanAddToCart);
             }
         }
 
+        private BindingList<CartItem> _cart = new BindingList<CartItem>();
+
+        public BindingList<CartItem> Cart
+        {
+            get { return _cart; }
+            set
+            {
+                _cart = value;
+                NotifyOfPropertyChange(() => Cart);
+            }
+        }
+
+
         public void AddToCart()
         {
+            CartItem existingItem = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
 
+            if (Cart.Contains(existingItem))
+            {
+                Cart.Remove(existingItem);
+                existingItem.QuantityInCart += ItemQuantity;
+
+                Cart.Add(existingItem);
+            }
+            else
+            {
+                CartItem Item = new CartItem
+                {
+                    Product = SelectedProduct,
+                    QuantityInCart = ItemQuantity
+                };
+
+                Cart.Add(Item);
+            }
+
+
+
+            SelectedProduct.QuantityInStock -= ItemQuantity;
+            if (SelectedProduct.QuantityInStock <= 0)
+            {
+                Products.Remove(SelectedProduct);
+            }
+
+            ItemQuantity = 1;
+
+            NotifyOfPropertyChange(() => SubTotal);
         }
 
         public bool CanAddToCart
         {
             get
             {
-                // return ((Products?.Length ?? 0) > 0);
-                return true;
+                //check if a product is selected and there is a quantity attached to the selected Product
+                return (ItemQuantity > 0 && SelectedProduct?.QuantityInStock >= ItemQuantity);
+                //return false;
             }
         }
         public void RemoveFromCart()
         {
 
+            NotifyOfPropertyChange(() => SubTotal);
         }
 
         public bool CanRemoveFromCart
@@ -80,22 +140,19 @@ namespace RetailManager.DesktopUI.ViewModels
         }
 
 
-        public BindingList<Product> Cart
-        {
-            get { return _cart; }
-            set
-            {
-                _cart = value;
-                NotifyOfPropertyChange(() => Cart);
-            }
-        }
+
 
         public string SubTotal
         {
             get
             {
                 //calculate here
-                return "$0.00";
+                decimal subTotal = 0;
+                foreach (var item in Cart)
+                {
+                    subTotal += item.Product.RetailPrice * item.QuantityInCart;
+                }
+                return subTotal.ToString("C");
             }
         }
 

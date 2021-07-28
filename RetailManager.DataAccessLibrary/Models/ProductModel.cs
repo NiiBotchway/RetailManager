@@ -13,5 +13,6 @@ namespace RetailManager.DataAccessLibrary.Models
         public string Description { get; set; }
         public string RetailPrice { get; set; }
         public int QuantityInStock { get; set; }
+        public bool IsTaxable { get; set; }
     }
 }

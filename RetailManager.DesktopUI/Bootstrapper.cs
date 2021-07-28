@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using RetailManager.DesktopUI.Helpers;
 using RetailManager.DesktopUI.Library.Api;
+using RetailManager.DesktopUI.Library.Helpers;
 using RetailManager.DesktopUI.Library.Models;
 using RetailManager.DesktopUI.ViewModels;
 using System;
@@ -36,6 +37,7 @@ namespace RetailManager.DesktopUI
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
                 .Singleton<ILoggedInUserModel, LoggedInUserModel>()
+                .Singleton<IConfigHelper, ConfigHelper>()
                 .Singleton<IUICoreEndpoint, UICoreEndpoint>();
 
             GetType().Assembly.GetTypes()

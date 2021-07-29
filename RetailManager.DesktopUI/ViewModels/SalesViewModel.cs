@@ -148,9 +148,6 @@ namespace RetailManager.DesktopUI.ViewModels
             }
         }
 
-
-
-
         public string SubTotal
         {
             get
@@ -185,7 +182,6 @@ namespace RetailManager.DesktopUI.ViewModels
             {
                 if (item.Product.IsTaxable)
                 {
-
                     taxAmount += item.Product.RetailPrice * item.QuantityInCart * taxRate;
                 }
 

@@ -225,6 +225,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202107290318107_RetailManager_InitialCreate.cs" />
+    <Compile Include="Migrations\202107290318107_RetailManager_InitialCreate.designer.cs">
+      <DependentUpon>202107290318107_RetailManager_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -327,6 +332,11 @@
       <Project>{afce20f8-9725-4502-87c4-77a829ebfc32}</Project>
       <Name>RetailManager.DataAccessLibrary</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202107290318107_RetailManager_InitialCreate.resx">
+      <DependentUpon>202107290318107_RetailManager_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

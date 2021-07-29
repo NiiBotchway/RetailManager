@@ -159,10 +159,9 @@ namespace RetailManager.DesktopUI.ViewModels
         private decimal CalculateSubTotal()
         {
             decimal subTotal = 0;
-            foreach (var item in Cart)
-            {
-                subTotal += item.Product.RetailPrice * item.QuantityInCart;
-            }
+
+            subTotal = Cart.Sum(x => x.Product.RetailPrice * x.QuantityInCart);
+
             return subTotal;
         }
 
@@ -178,14 +177,9 @@ namespace RetailManager.DesktopUI.ViewModels
         {
             decimal taxAmount = 0;
             decimal taxRate = Convert.ToDecimal(_configHelper.GetTaxRate() / 100);
-            foreach (var item in Cart)
-            {
-                if (item.Product.IsTaxable)
-                {
-                    taxAmount += item.Product.RetailPrice * item.QuantityInCart * taxRate;
-                }
 
-            }
+            taxAmount = Cart.Where(x => x.Product.IsTaxable).Sum(x => x.Product.RetailPrice * x.QuantityInCart * taxRate);
+
             return taxAmount;
         }
 

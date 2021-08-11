@@ -17,11 +17,13 @@ namespace RetailManager.DesktopUI.ViewModels
 
         private readonly IProductEndpoint _productEndpoint;
         private readonly IConfigHelper _configHelper;
+        private readonly ISaleEndpoint _saleEndpoint;
 
-        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper)
+        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, ISaleEndpoint saleEndpoint)
         {
             this._productEndpoint = productEndpoint;
             this._configHelper = configHelper;
+            this._saleEndpoint = saleEndpoint;
         }
 
         protected override async void OnViewLoaded(object view)
@@ -120,6 +122,7 @@ namespace RetailManager.DesktopUI.ViewModels
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
         }
 
         public bool CanAddToCart
@@ -137,14 +140,15 @@ namespace RetailManager.DesktopUI.ViewModels
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
+            NotifyOfPropertyChange(() => CanRemoveFromCart);
         }
 
         public bool CanRemoveFromCart
         {
             get
             {
-                // return ((Products?.Length ?? 0) > 0);
-                return true;
+                return Cart.Any();
             }
         }
 
@@ -203,13 +207,24 @@ namespace RetailManager.DesktopUI.ViewModels
             get
             {
                 //checkout
-                return true;
+                return Cart.Any();
             }
         }
 
-        public void CheckOut()
+        public async Task CheckOut()
         {
+            Sale sale = new Sale();
 
+
+            foreach (var item in Cart)
+            {
+                sale.SaleDetails.Add(new SaleDetails()
+                {
+                    ProductId = item.Product.Id,
+                    Quantity = item.QuantityInCart
+                });
+            }
+            await _saleEndpoint.PostSale(sale);
         }
     }
 }

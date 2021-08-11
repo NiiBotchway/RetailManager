@@ -15,7 +15,7 @@ namespace RetailManager.DataAccessLibrary.Internal.DataAccess
             return ConfigurationManager.ConnectionStrings[name].ConnectionString;
         }
 
-        public List<T> LoadData<T, U>(string storedProcedure, U parameters, string connectionStringName = "default")
+        public List<T> FetchData<T, U>(string storedProcedure, U parameters, string connectionStringName = "RetailManagerDB")
         {
             string connectionString = GetConnectionString(connectionStringName);
 
@@ -26,7 +26,7 @@ namespace RetailManager.DataAccessLibrary.Internal.DataAccess
             }
         }
 
-        public void SaveData<T>(string storedProcedure, T parameters, string connectionStringName = "default")
+        public void SaveData<T>(string storedProcedure, T parameters, string connectionStringName = "RetailManagerDB")
         {
             string connectionString = GetConnectionString(connectionStringName);
 

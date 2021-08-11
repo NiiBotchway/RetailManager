@@ -57,6 +57,7 @@ namespace RetailManager.DesktopUI.Library.Api
                     var result = await response.Content.ReadAsAsync<AuthenticatedUser>();
 
                     _loggedInUser.Token = result.Access_Token;
+                    _apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer { _loggedInUser.Token }");
 
                     return result;
                 }
@@ -69,12 +70,6 @@ namespace RetailManager.DesktopUI.Library.Api
 
         public async Task<LoggedInUserModel> GetLoggedInUserInfo()
         {
-
-            _apiClient.DefaultRequestHeaders.Clear();
-            _apiClient.DefaultRequestHeaders.Accept.Clear();
-            _apiClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            _apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer { _loggedInUser.Token }");
-
             using (HttpResponseMessage response = await _apiClient.GetAsync("api/User"))
             {
                 if (response.IsSuccessStatusCode)

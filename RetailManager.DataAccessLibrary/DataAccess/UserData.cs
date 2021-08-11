@@ -14,7 +14,7 @@ namespace RetailManager.DataAccessLibrary.DataAccess
         public UserModel GetUserById(string Id)
         {
             var p = new { Id };
-            var output = dataAccess.LoadData<UserModel, dynamic>("spUserLookup", p, "RetailManagerDB").FirstOrDefault();
+            var output = dataAccess.FetchData<UserModel, dynamic>("spUserLookup", p, "RetailManagerDB").FirstOrDefault();
 
             return output;
         }

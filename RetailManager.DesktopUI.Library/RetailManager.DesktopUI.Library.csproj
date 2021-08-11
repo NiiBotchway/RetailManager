@@ -49,6 +49,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\IProductEndpoint.cs" />
+    <Compile Include="Api\ISaleEndpoint.cs" />
+    <Compile Include="Api\SaleEndpoint.cs" />
     <Compile Include="Api\UICoreEndpoint.cs" />
     <Compile Include="Api\IUICoreEndpoint.cs" />
     <Compile Include="Api\ProductEndpoint.cs" />
@@ -59,6 +61,8 @@
     <Compile Include="Models\ILoggedInUserModel.cs" />
     <Compile Include="Models\LoggedInUserModel.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Sale.cs" />
+    <Compile Include="Models\SaleDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

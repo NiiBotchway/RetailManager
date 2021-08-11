@@ -9,25 +9,22 @@ using System.Threading.Tasks;
 
 namespace RetailManager.DesktopUI.Library.Api
 {
-    public class ProductEndpoint : IProductEndpoint
+    public class SaleEndpoint : ISaleEndpoint
     {
         private readonly IUICoreEndpoint _coreEndpoint;
 
-        public ProductEndpoint(IUICoreEndpoint coreEndpoint, ILoggedInUserModel loggedInUser)
+        public SaleEndpoint(IUICoreEndpoint coreEndpoint, ILoggedInUserModel loggedInUser)
         {
             this._coreEndpoint = coreEndpoint;
         }
 
-
-        public async Task<List<Product>> GetProducts()
+        public async Task<Sale> PostSale(Sale sale)
         {
-            using (HttpResponseMessage response = await _coreEndpoint.ApiClient.GetAsync("api/Product"))
+            using (HttpResponseMessage response = await _coreEndpoint.ApiClient.PostAsJsonAsync("api/Sale", sale))
             {
                 if (response.IsSuccessStatusCode)
                 {
-                    var result = await response.Content.ReadAsAsync<List<Product>>();
-
-                    return result;
+                    //Log success status
                 }
                 throw new Exception(response.ReasonPhrase);
             }

@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RetailManager.DesktopUI.Library.Helpers
+namespace RetailManager.DataAccessLibrary.Helpers
 {
-    public class ConfigHelper : IConfigHelper
+    public class ConfigHelper
     {
-        public double GetTaxRate()
+        public static double GetTaxRate()
         {
             string taxRate = ConfigurationManager.AppSettings.Get("taxRate");
 

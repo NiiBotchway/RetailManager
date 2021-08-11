@@ -38,7 +38,8 @@ namespace RetailManager.DesktopUI
                 .Singleton<IEventAggregator, EventAggregator>()
                 .Singleton<ILoggedInUserModel, LoggedInUserModel>()
                 .Singleton<IConfigHelper, ConfigHelper>()
-                .Singleton<IUICoreEndpoint, UICoreEndpoint>();
+                .Singleton<IUICoreEndpoint, UICoreEndpoint>()
+                .Singleton<ISaleEndpoint, SaleEndpoint>();
 
             GetType().Assembly.GetTypes()
                 .Where(type => type.IsClass)

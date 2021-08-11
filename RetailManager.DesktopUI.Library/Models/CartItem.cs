@@ -10,12 +10,5 @@ namespace RetailManager.DesktopUI.Library.Models
     {
         public Product Product { get; set; }
         public int QuantityInCart { get; set; }
-        public string DisplayText
-        {
-            get
-            {
-                return $"{Product.ProductName } ({QuantityInCart})";
-            }
-        }
     }
 }

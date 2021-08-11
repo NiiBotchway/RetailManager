@@ -1,7 +1,9 @@
-﻿using Caliburn.Micro;
+﻿using AutoMapper;
+using Caliburn.Micro;
 using RetailManager.DesktopUI.Library.Api;
 using RetailManager.DesktopUI.Library.Helpers;
 using RetailManager.DesktopUI.Library.Models;
+using RetailManager.DesktopUI.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,25 +20,28 @@ namespace RetailManager.DesktopUI.ViewModels
         private readonly IProductEndpoint _productEndpoint;
         private readonly IConfigHelper _configHelper;
         private readonly ISaleEndpoint _saleEndpoint;
+        private readonly IMapper _mapper;
 
-        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, ISaleEndpoint saleEndpoint)
+        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, ISaleEndpoint saleEndpoint, IMapper mapper)
         {
             this._productEndpoint = productEndpoint;
             this._configHelper = configHelper;
             this._saleEndpoint = saleEndpoint;
+            this._mapper = mapper;
         }
 
         protected override async void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
 
-            var products = await _productEndpoint.GetProducts();
-            Products = new BindingList<Product>(products);
+            var productList = await _productEndpoint.GetProducts();
+            var products = _mapper.Map<List<ProductDisplayModel>>(productList);
+            Products = new BindingList<ProductDisplayModel>(products);
         }
 
-        private BindingList<Product> _products = new BindingList<Product>();
+        private BindingList<ProductDisplayModel> _products = new BindingList<ProductDisplayModel>();
 
-        public BindingList<Product> Products
+        public BindingList<ProductDisplayModel> Products
         {
             get { return _products; }
             set
@@ -46,9 +51,9 @@ namespace RetailManager.DesktopUI.ViewModels
             }
         }
 
-        private Product _selectedProduct;
+        private ProductDisplayModel _selectedProduct;
 
-        public Product SelectedProduct
+        public ProductDisplayModel SelectedProduct
         {
             get { return _selectedProduct; }
             set
@@ -74,9 +79,9 @@ namespace RetailManager.DesktopUI.ViewModels
             }
         }
 
-        private BindingList<CartItem> _cart = new BindingList<CartItem>();
+        private BindingList<CartItemDisplayModel> _cart = new BindingList<CartItemDisplayModel>();
 
-        public BindingList<CartItem> Cart
+        public BindingList<CartItemDisplayModel> Cart
         {
             get { return _cart; }
             set
@@ -89,18 +94,19 @@ namespace RetailManager.DesktopUI.ViewModels
 
         public void AddToCart()
         {
-            CartItem existingItem = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
+            CartItemDisplayModel existingItem = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
+            //_mapper.Map(existingItem);
 
             if (Cart.Contains(existingItem))
             {
-                Cart.Remove(existingItem);
+                //Cart.Remove(existingItem);
                 existingItem.QuantityInCart += ItemQuantity;
 
-                Cart.Add(existingItem);
+                //Cart.Add(existingItem);
             }
             else
             {
-                CartItem Item = new CartItem
+                CartItemDisplayModel Item = new CartItemDisplayModel
                 {
                     Product = SelectedProduct,
                     QuantityInCart = ItemQuantity
@@ -129,7 +135,7 @@ namespace RetailManager.DesktopUI.ViewModels
         {
             get
             {
-                //check if a product is selected and there is a quantity attached to the selected Product
+                //check if a product is selected and there is a quantity attached to the selected ProductDisplayModel
                 return (ItemQuantity > 0 && SelectedProduct?.QuantityInStock >= ItemQuantity);
                 //return false;
             }

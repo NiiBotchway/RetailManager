@@ -65,7 +65,6 @@ namespace RetailManager.DesktopUI.ViewModels
             }
         }
 
-
         private int _itemQuantity = 1;
 
         public int ItemQuantity
@@ -91,18 +90,28 @@ namespace RetailManager.DesktopUI.ViewModels
             }
         }
 
+        private CartItemDisplayModel _selectedCartItem;
+
+        public CartItemDisplayModel SelectedCartItem
+        {
+            get { return _selectedCartItem; }
+            set
+            {
+                _selectedCartItem = value;
+
+                NotifyOfPropertyChange(() => SelectedCartItem);
+                NotifyOfPropertyChange(() => CanRemoveFromCart);
+            }
+        }
+
 
         public void AddToCart()
         {
             CartItemDisplayModel existingItem = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
-            //_mapper.Map(existingItem);
 
-            if (Cart.Contains(existingItem))
+            if (existingItem != null)
             {
-                //Cart.Remove(existingItem);
                 existingItem.QuantityInCart += ItemQuantity;
-
-                //Cart.Add(existingItem);
             }
             else
             {
@@ -123,7 +132,7 @@ namespace RetailManager.DesktopUI.ViewModels
                 Products.Remove(SelectedProduct);
             }
 
-            ItemQuantity = 1;
+            //ItemQuantity = 1;
 
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
@@ -136,12 +145,31 @@ namespace RetailManager.DesktopUI.ViewModels
             get
             {
                 //check if a product is selected and there is a quantity attached to the selected ProductDisplayModel
-                return (ItemQuantity > 0 && SelectedProduct?.QuantityInStock >= ItemQuantity);
-                //return false;
+
+                bool result = ItemQuantity > 0 && SelectedProduct?.QuantityInStock >= ItemQuantity;
+                return result;
             }
         }
         public void RemoveFromCart()
         {
+            var ExistingProduct = Products.FirstOrDefault(x => x == SelectedCartItem.Product);
+
+            if (ExistingProduct == null)
+            {
+                Products.Add(SelectedCartItem.Product);
+            }
+
+
+            SelectedCartItem.Product.QuantityInStock += 1;
+
+            if (SelectedCartItem.QuantityInCart > 1)
+            {
+                SelectedCartItem.QuantityInCart -= 1;
+            }
+            else
+            {
+                Cart.Remove(SelectedCartItem);
+            }
 
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
@@ -154,7 +182,7 @@ namespace RetailManager.DesktopUI.ViewModels
         {
             get
             {
-                return Cart.Any();
+                return SelectedCartItem != null;
             }
         }
 

@@ -57,6 +57,7 @@ namespace RetailManager.DesktopUI.Library.Api
                     var result = await response.Content.ReadAsAsync<AuthenticatedUser>();
 
                     _loggedInUser.Token = result.Access_Token;
+                    _apiClient.DefaultRequestHeaders.Clear();
                     _apiClient.DefaultRequestHeaders.Add("Authorization", $"Bearer { _loggedInUser.Token }");
 
                     return result;

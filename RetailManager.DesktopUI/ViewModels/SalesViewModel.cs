@@ -30,16 +30,47 @@ namespace RetailManager.DesktopUI.ViewModels
             this._mapper = mapper;
         }
 
+
+        private BindingList<ProductDisplayModel> _products = new BindingList<ProductDisplayModel>();
+
+        private ProductDisplayModel _selectedProduct;
+
+        private int _itemQuantity = 1;
+
+        private BindingList<CartItemDisplayModel> _cart = new BindingList<CartItemDisplayModel>();
+
+        private CartItemDisplayModel _selectedCartItem;
+
+
+
+
         protected override async void OnViewLoaded(object view)
         {
             base.OnViewLoaded(view);
+            await LoadProducts();
+        }
 
+        private async Task LoadProducts()
+        {
             var productList = await _productEndpoint.GetProducts();
             var products = _mapper.Map<List<ProductDisplayModel>>(productList);
             Products = new BindingList<ProductDisplayModel>(products);
         }
 
-        private BindingList<ProductDisplayModel> _products = new BindingList<ProductDisplayModel>();
+        private async Task ResetPage()
+        {
+            Cart = new BindingList<CartItemDisplayModel>();
+            await LoadProducts();
+
+            NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
+            NotifyOfPropertyChange(() => CanRemoveFromCart);
+        }
+
+
+
 
         public BindingList<ProductDisplayModel> Products
         {
@@ -51,7 +82,6 @@ namespace RetailManager.DesktopUI.ViewModels
             }
         }
 
-        private ProductDisplayModel _selectedProduct;
 
         public ProductDisplayModel SelectedProduct
         {
@@ -65,7 +95,6 @@ namespace RetailManager.DesktopUI.ViewModels
             }
         }
 
-        private int _itemQuantity = 1;
 
         public int ItemQuantity
         {
@@ -78,7 +107,6 @@ namespace RetailManager.DesktopUI.ViewModels
             }
         }
 
-        private BindingList<CartItemDisplayModel> _cart = new BindingList<CartItemDisplayModel>();
 
         public BindingList<CartItemDisplayModel> Cart
         {
@@ -90,7 +118,6 @@ namespace RetailManager.DesktopUI.ViewModels
             }
         }
 
-        private CartItemDisplayModel _selectedCartItem;
 
         public CartItemDisplayModel SelectedCartItem
         {
@@ -103,6 +130,31 @@ namespace RetailManager.DesktopUI.ViewModels
                 NotifyOfPropertyChange(() => CanRemoveFromCart);
             }
         }
+
+
+        public string SubTotal
+        {
+            get
+            {
+                return CalculateSubTotal().ToString("C");
+            }
+        }
+
+        public string Tax
+        {
+            get
+            {
+                return CalculateTax().ToString("C");
+            }
+        }
+        public string Total
+        {
+            get
+            {
+                return CalculateTotal().ToString("C");
+            }
+        }
+
 
 
         public void AddToCart()
@@ -132,7 +184,6 @@ namespace RetailManager.DesktopUI.ViewModels
                 Products.Remove(SelectedProduct);
             }
 
-            //ItemQuantity = 1;
 
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
@@ -186,14 +237,6 @@ namespace RetailManager.DesktopUI.ViewModels
             }
         }
 
-        public string SubTotal
-        {
-            get
-            {
-                return CalculateSubTotal().ToString("C");
-            }
-        }
-
         private decimal CalculateSubTotal()
         {
             decimal subTotal = 0;
@@ -201,14 +244,6 @@ namespace RetailManager.DesktopUI.ViewModels
             subTotal = Cart.Sum(x => x.Product.RetailPrice * x.QuantityInCart);
 
             return subTotal;
-        }
-
-        public string Tax
-        {
-            get
-            {
-                return CalculateTax().ToString("C");
-            }
         }
 
         private decimal CalculateTax()
@@ -222,13 +257,6 @@ namespace RetailManager.DesktopUI.ViewModels
         }
 
 
-        public string Total
-        {
-            get
-            {
-                return CalculateTotal().ToString("C");
-            }
-        }
 
         private decimal CalculateTotal()
         {
@@ -259,6 +287,8 @@ namespace RetailManager.DesktopUI.ViewModels
                 });
             }
             await _saleEndpoint.PostSale(sale);
+            await ResetPage();
         }
+
     }
 }

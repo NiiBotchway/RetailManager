@@ -120,7 +120,7 @@ namespace RetailManager.DesktopUI.ViewModels
                     ErrorMessage = "Wrong username or password";
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 ErrorMessage = $"Unknown Error Occured. \nPlease contact admin";
 

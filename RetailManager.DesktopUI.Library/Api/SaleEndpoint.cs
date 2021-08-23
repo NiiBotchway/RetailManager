@@ -25,8 +25,11 @@ namespace RetailManager.DesktopUI.Library.Api
                 if (response.IsSuccessStatusCode)
                 {
                     //Log success status
+                    return sale;
                 }
+
                 throw new Exception(response.ReasonPhrase);
+
             }
         }
     }
